@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  pdf-ocr-api:
+    build: .
+    container_name: pdf-ocr-extraction-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # Optional: Mount a directory for persistent storage
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
